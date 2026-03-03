@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Movie Prediction Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    {% include 'navbar.html' %}
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="animated-hero">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-orb orb-3"></div>
+        <div class="hero-mock-glass mock-1"></div>
+        <div class="hero-mock-glass mock-2"></div>
+        <div class="hero-mock-glass mock-3"></div>
+        <div class="overlay"></div>
+
+        <div class="container hero-content text-center">
+            <h1 class="display-3 fw-bold gradient-text mb-4 glow-accent">
+                Predict Movie Success Before Release
+            </h1>
+
+            <p class="lead mb-5">
+                A powerful machine learning platform that analyzes historical film data
+                to forecast box office revenue, audience impact, and financial performance.
+            </p>
+
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+                <a href="/predict" class="btn btn-primary custom-btn">
+                    Start Prediction <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+                <a href="/dashboard" class="btn btn-outline-light custom-btn">
+                    Explore Dashboard <i class="bi bi-graph-up ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= STATS SECTION ================= -->
+    <section class="stats-section text-center">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h2 class="counter">4500+</h2>
+                        <p>Movies Analyzed</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h2 class="counter">95%</h2>
+                        <p>Prediction Accuracy</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h2 class="counter">20+</h2>
+                        <p>Key Features Used</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <h2 class="counter">Instant</h2>
+                        <p>Real-Time Results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="section-padding bg-deep-blue">
+        <div class="container mb-5 text-center">
+            <h2 class="section-title">About the System</h2>
+            <p class="section-subtitle">
+                This platform combines film industry knowledge with data science techniques
+                to create reliable prediction models.
+            </p>
+        </div>
+
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-cpu card-icon"></i>
+                                <h5>Data-Driven Intelligence</h5>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>
+                                    Uses genre trends, budget allocation, cast popularity,
+                                    director performance history, and release timing for evaluation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-diagram-3 card-icon"></i>
+                                <h5>Machine Learning Models</h5>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>
+                                    Built using regression and ensemble algorithms trained
+                                    on structured historical datasets.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-bar-chart-line card-icon"></i>
+                                <h5>Interactive Dashboard</h5>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>
+                                    Visualize revenue comparisons, genre performance,
+                                    yearly trends, and hit versus flop analysis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= WORKFLOW ================= -->
+    <section class="section-padding">
+        <div class="container mb-5 text-center">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">A seamless 4-step pipeline from raw data to actionable predictions.</p>
+        </div>
+
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 text-center">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-database-down card-icon"></i>
+                                <h6>1. Collection</h6>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Gathering structured movie datasets from multiple sources.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-center">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-funnel card-icon"></i>
+                                <h6>2. Preprocessing</h6>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Cleaning, handling missing values, and feature engineering.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-center">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-lightning-charge card-icon"></i>
+                                <h6>3. Training</h6>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Training ML algorithms to map features to financial outcomes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-center">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="bi bi-check-circle card-icon"></i>
+                                <h6>4. Prediction</h6>
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Instant revenue estimations, ROI checks, and status outputs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="cta-dark text-center">
+        <div class="container">
+            <h2 class="fw-bold mb-3">Start Exploring Movie Intelligence</h2>
+            <p class="text-muted mb-5">Make smarter production and investment decisions powered by AI.</p>
+            <a href="/predict" class="btn btn-primary btn-lg custom-btn">
+                Try Prediction Now <i class="bi bi-rocket-takeoff ms-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-dark text-center">
+        <p>© 2026 Movie Prediction Dashboard | Built with Flask & Machine Learning</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

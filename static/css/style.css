@@ -1,0 +1,423 @@
+/* ============================================================== 
+   CORE GLOBAL STYLES (PREMIUM DARK MODERN THEME)
+============================================================== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #0f172a;
+    /* Deep Slate Background */
+    color: #e2e8f0;
+    /* Soft White Text */
+    overflow-x: hidden;
+}
+
+/* Scrollbar styling for a premium feel */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+
+/* ============================================================== 
+   GRADIENTS & ACCENTS
+============================================================== */
+.gradient-text {
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+    background-size: 200% auto;
+    animation: textShine 4s linear infinite;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes textShine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.glow-accent {
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+
+/* ============================================================== 
+   BUTTONS
+============================================================== */
+.custom-btn {
+    border-radius: 30px;
+    padding: 14px 35px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: none;
+}
+
+.custom-btn.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.custom-btn.btn-primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.custom-btn.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.custom-btn.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5);
+}
+
+.custom-btn.btn-outline-light {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(5px);
+}
+
+.custom-btn.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ============================================================== 
+   HERO SECTION
+============================================================== */
+.animated-hero {
+    height: 100vh;
+    position: relative;
+    background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* Ambient glowing orbs behind hero */
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: 0;
+    animation: drift 10s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: #6366f1;
+    top: -100px;
+    left: -100px;
+}
+
+.orb-2 {
+    width: 300px;
+    height: 300px;
+    background: #ec4899;
+    bottom: -50px;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+@keyframes drift {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(40px) translateX(-40px) scale(1.1);
+    }
+}
+
+/* Floating Mock Elements for Density */
+.hero-mock-glass {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    z-index: 1;
+    animation: floatSlow 8s infinite alternate ease-in-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.mock-1 {
+    width: 150px;
+    height: 150px;
+    top: 15%;
+    left: 10%;
+    transform: rotate(15deg);
+}
+
+.mock-2 {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    transform: rotate(-10deg);
+    animation-delay: -4s;
+}
+
+.mock-3 {
+    width: 200px;
+    height: 120px;
+    top: 25%;
+    right: 12%;
+    transform: rotate(-15deg);
+    animation-delay: -2s;
+}
+
+@keyframes floatSlow {
+    0% {
+        transform: translateY(0) rotate(var(--rot, 0deg));
+    }
+
+    100% {
+        transform: translateY(-30px) rotate(var(--rot, 10deg));
+    }
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    /* Subtle texture */
+    opacity: 0.05;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    letter-spacing: -1px;
+}
+
+.hero-content p {
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
+/* ============================================================== 
+   STATS SECTION
+============================================================== */
+.stats-section {
+    padding: 60px 0;
+    background: #1e293b;
+    /* Slightly lighter slate */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    z-index: 5;
+}
+
+.stat-item {
+    padding: 20px;
+}
+
+.counter {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3));
+}
+
+.stat-item p {
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* ============================================================== 
+   CARDS & 3D FLIP ANIMATIONS
+============================================================== */
+
+/* Wrapper for 3D Perspective */
+.flip-card {
+    background-color: transparent;
+    height: 320px;
+    perspective: 1200px;
+    /* 3D effect depth */
+    border-radius: 24px;
+}
+
+/* Inner container holding front & back */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+/* Hover trigger */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Shared styles for front and back */
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    /* Safari */
+    backface-visibility: hidden;
+    border-radius: 24px;
+    padding: 35px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Front Face (Glassmorphic Dark) */
+.flip-card-front {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f8fafc;
+}
+
+.flip-card-front h5,
+.flip-card-front h6 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+/* Back Face (Vibrant Gradient) */
+.flip-card-back {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: white;
+    transform: rotateY(180deg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flip-card-back p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Icons */
+.card-icon {
+    font-size: 45px;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    margin-bottom: 20px;
+}
+
+
+/* ============================================================== 
+   SECTIONS
+============================================================== */
+.section-padding {
+    padding: 120px 0;
+    position: relative;
+}
+
+.section-title {
+    font-weight: 700;
+    font-size: 36px;
+    color: #f8fafc;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    color: #94a3b8;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Background Gradients for specific sections to break monotony */
+.bg-deep-blue {
+    background: linear-gradient(to bottom, #0f172a, #0b1120);
+}
+
+
+/* ============================================================== 
+   CTA SECTION & FOOTER
+============================================================== */
+.cta-dark {
+    padding: 120px 0;
+    background: radial-gradient(circle at center, #1e1b4b, #0f172a 70%);
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.cta-dark h2 {
+    color: white;
+}
+
+.footer-dark {
+    padding: 30px;
+    background: #020617;
+    /* Darkest slate */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-dark p {
+    color: #64748b;
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}

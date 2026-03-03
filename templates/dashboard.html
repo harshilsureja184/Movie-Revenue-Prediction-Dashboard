@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Revenue Analytics Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-dark: rgba(25, 28, 41, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #edf2f7;
+            --text-mutated: #a0aec0;
+            --neon-accent: #6ee7b7;
+            --purple-accent: #a78bfa;
+            --blue-accent: #93c5fd;
+        }
+
+        body {
+            background: linear-gradient(to right, #0f111a, #161b22);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+
+        .dashboard-header {
+            margin-top: 5rem;
+            padding: 2rem 0;
+        }
+
+        .dashboard-title {
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--neon-accent), var(--blue-accent), var(--purple-accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-mutated);
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--card-dark);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .kpi-icon {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-size: 1.5rem;
+        }
+
+        .kpi-icon.revenue {
+            background: rgba(110, 231, 183, 0.1);
+            color: var(--neon-accent);
+        }
+
+        .kpi-icon.budget {
+            background: rgba(167, 139, 250, 0.1);
+            color: var(--purple-accent);
+        }
+
+        .kpi-icon.movies {
+            background: rgba(147, 197, 253, 0.1);
+            color: var(--blue-accent);
+        }
+
+        .kpi-icon.success {
+            background: rgba(244, 114, 182, 0.1);
+            color: #f472b6;
+        }
+
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .kpi-label {
+            color: var(--text-mutated);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Form Controls */
+        .form-label {
+            color: var(--text-mutated);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-select-custom {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23A0AEC0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem top 50%;
+            background-size: 0.65rem auto;
+        }
+
+        .form-select-custom:focus {
+            outline: none;
+            border-color: var(--neon-accent);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.2);
+        }
+
+        .form-select-custom option {
+            background-color: #1a1d2d;
+            color: #fff;
+        }
+
+        /* Chart Containers */
+        .chart-wrapper {
+            position: relative;
+            height: 320px;
+            width: 100%;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-title i {
+            color: var(--blue-accent);
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 17, 26, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            transition: opacity 0.3s ease;
+        }
+
+        #loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner-glow {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid rgba(110, 231, 183, 0.2);
+            border-right-color: var(--neon-accent);
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Include Navbar -->
+    {% include 'navbar.html' %}
+
+    <div id="loading-overlay">
+        <div class="spinner-glow mb-3"></div>
+        <h4 style="font-weight:300;">Analyzing Datasets...</h4>
+    </div>
+
+    <div class="container pb-5">
+
+        <!-- Header -->
+        <div class="dashboard-header text-center">
+            <h1 class="dashboard-title">Movie Analytics Intelligence</h1>
+            <p class="dashboard-subtitle">Real-time insights across budget, genres, and ROI from the TMDB database</p>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="glass-card mb-5">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label class="form-label"><i class="bi bi-film me-2"></i>Genre</label>
+                    <select id="genre" class="form-select-custom">
+                        <option value="All">All Genres</option>
+                        {% for g in genres %}
+                        <option value="{{ g }}">{{ g }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"><i class="bi bi-calendar-event me-2"></i>Release Year</label>
+                    <select id="year" class="form-select-custom">
+                        <option value="All">All Years</option>
+                        {% for y in years|sort(reverse=true) %}
+                        <option value="{{ y }}">{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label"><i class="bi bi-cash-stack me-2"></i>Budget Range</label>
+                    <select id="budget" class="form-select-custom">
+                        <option value="All">All Budgets</option>
+                        <option value="Low">Low (< $20M)</option>
+                        <option value="Medium">Medium ($20M - $100M)</option>
+                        <option value="High">Blockbuster (> $100M)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-xl-3 col-md-6">
+                <div class="glass-card kpi-card">
+                    <div class="kpi-icon movies"><i class="bi bi-collection-play-fill"></i></div>
+                    <div>
+                        <p class="kpi-label">Analyzed Movies</p>
+                        <h3 class="kpi-value" id="kpi-movies">-</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="glass-card kpi-card">
+                    <div class="kpi-icon revenue"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div>
+                        <p class="kpi-label">Avg Box Office</p>
+                        <h3 class="kpi-value" id="kpi-revenue">-</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="glass-card kpi-card">
+                    <div class="kpi-icon budget"><i class="bi bi-piggy-bank-fill"></i></div>
+                    <div>
+                        <p class="kpi-label">Avg Prod Budget</p>
+                        <h3 class="kpi-value" id="kpi-budget">-</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="glass-card kpi-card">
+                    <div class="kpi-icon success"><i class="bi bi-stars"></i></div>
+                    <div>
+                        <p class="kpi-label">Commercial Success</p>
+                        <h3 class="kpi-value" id="kpi-success">-</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="row g-4">
+
+            <div class="col-lg-8">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-bar-chart-fill"></i> Revenue Trajectory by Release Year</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-pie-chart-fill"></i> Success vs Failure</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-camera-reels-fill"></i> Average Revenue by Genre</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-activity"></i> Average Budget by Genre</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-vinyl-fill"></i> ROI Distribution</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="roiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="glass-card h-100">
+                    <h4 class="chart-title"><i class="bi bi-scatter-chart"></i> Popularity vs Financial Return</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Chart Defaults for Dark Theme
+        Chart.defaults.color = '#A0AEC0';
+        Chart.defaults.font.family = "'Outfit', sans-serif";
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 17, 26, 0.9)';
+        Chart.defaults.plugins.tooltip.titleColor = '#fff';
+        Chart.defaults.plugins.tooltip.bodyColor = '#e2e8f0';
+        Chart.defaults.plugins.tooltip.borderColor = 'rgba(255,255,255,0.1)';
+        Chart.defaults.plugins.tooltip.borderWidth = 1;
+        Chart.defaults.plugins.tooltip.padding = 12;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+        const gridConfig = {
+            color: 'rgba(255, 255, 255, 0.05)',
+            drawBorder: false
+        };
+
+        const formatCurrency = (val) => {
+            if (val >= 1e9) return '$' + (val / 1e9).toFixed(2) + 'B';
+            if (val >= 1e6) return '$' + (val / 1e6).toFixed(2) + 'M';
+            return '$' + val.toLocaleString();
+        };
+
+        let charts = {};
+
+        function initCharts() {
+            ['barChart', 'pieChart', 'lineChart', 'budgetChart', 'roiChart', 'scatterChart'].forEach(id => {
+                if (charts[id]) charts[id].destroy();
+            });
+        }
+
+        async function fetchData() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+
+            const genre = document.getElementById("genre").value;
+            const year = document.getElementById("year").value;
+            const budget = document.getElementById("budget").value;
+
+            try {
+                const response = await fetch(`/get_dashboard_data?genre=${genre}&year=${year}&budget=${budget}`);
+                const data = await response.json();
+
+                updateKPIs(data.kpis);
+                renderCharts(data);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                }, 300); // slight delay for smooth visual transition
+            }
+        }
+
+        function updateKPIs(kpis) {
+            if (!kpis) return;
+            document.getElementById('kpi-movies').innerText = kpis.total_movies.toLocaleString();
+            document.getElementById('kpi-revenue').innerText = formatCurrency(kpis.avg_revenue);
+            document.getElementById('kpi-budget').innerText = formatCurrency(kpis.avg_budget);
+            document.getElementById('kpi-success').innerText = kpis.success_rate.toFixed(1) + '%';
+        }
+
+        function renderCharts(data) {
+            initCharts();
+
+            // Colors Palette
+            const purpleGrad = (ctx) => {
+                if (!ctx.chart.ctx) return 'rgba(167, 139, 250, 0.8)';
+                const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(167, 139, 250, 0.8)');
+                gradient.addColorStop(1, 'rgba(167, 139, 250, 0.2)');
+                return gradient;
+            };
+            const neonGrad = (ctx) => {
+                if (!ctx.chart.ctx) return 'rgba(110, 231, 183, 0.8)';
+                const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(110, 231, 183, 0.8)');
+                gradient.addColorStop(1, 'rgba(110, 231, 183, 0.2)');
+                return gradient;
+            };
+
+            // 1. Revenue by Genre (Bar)
+            charts.barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.revenue_by_genre),
+                    datasets: [{
+                        label: "Avg Revenue",
+                        data: Object.values(data.revenue_by_genre),
+                        backgroundColor: neonGrad,
+                        borderRadius: 6,
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: gridConfig, ticks: { callback: formatCurrency } }
+                    }
+                }
+            });
+
+            // 2. Success vs Failure (Doughnut)
+            charts.pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ["Hit", "Flop"],
+                    datasets: [{
+                        data: [data.success, data.failure],
+                        backgroundColor: ['#6ee7b7', '#f472b6'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '75%',
+                    plugins: { legend: { position: 'bottom', labels: { padding: 20 } } }
+                }
+            });
+
+            // 3. Revenue Trend (Line)
+            const years = Object.keys(data.year_trend).sort();
+            const revs = years.map(y => data.year_trend[y]);
+            charts.lineChart = new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: "Revenue Trajectory",
+                        data: revs,
+                        borderColor: '#93c5fd',
+                        backgroundColor: (context) => {
+                            if (!context.chart.ctx) return 'rgba(147, 197, 253, 0.2)';
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                            gradient.addColorStop(0, 'rgba(147, 197, 253, 0.5)');
+                            gradient.addColorStop(1, 'rgba(147, 197, 253, 0.0)');
+                            return gradient;
+                        },
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#0f111a',
+                        pointBorderColor: '#93c5fd',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
+                        y: { grid: gridConfig, ticks: { callback: formatCurrency } }
+                    }
+                }
+            });
+
+            // 4. Budget by Genre (Bar)
+            charts.budgetChart = new Chart(document.getElementById('budgetChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.avg_budget),
+                    datasets: [{
+                        label: "Avg Budget",
+                        data: Object.values(data.avg_budget),
+                        backgroundColor: purpleGrad,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: gridConfig, ticks: { callback: formatCurrency } }
+                    }
+                }
+            });
+
+            // 5. ROI Distribution (Pie)
+            charts.roiChart = new Chart(document.getElementById('roiChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.roi_dist),
+                    datasets: [{
+                        data: Object.values(data.roi_dist),
+                        backgroundColor: ['#a78bfa', '#93c5fd', '#fbbf24'],
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '70%',
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            // 6. Scatter (Popularity vs Revenue)
+            charts.scatterChart = new Chart(document.getElementById('scatterChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: "Movies",
+                        data: data.popularity.map(p => ({ x: p[0], y: p[1] })),
+                        backgroundColor: 'rgba(236, 72, 153, 0.6)',
+                        borderColor: '#ec4899',
+                        borderWidth: 1,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: {
+                            title: { display: true, text: "TMDB Popularity Score", color: '#e2e8f0' },
+                            grid: gridConfig
+                        },
+                        y: {
+                            title: { display: true, text: "Global Revenue ($)", color: '#e2e8f0' },
+                            grid: gridConfig,
+                            ticks: { callback: formatCurrency }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Setup filter listeners
+        document.querySelectorAll('select').forEach(el => {
+            el.addEventListener('change', fetchData);
+        });
+
+        // Add some scroll effects for the navbar if included
+        window.addEventListener('scroll', () => {
+            let navbar = document.querySelector('.navbar');
+            if (navbar) {
+                if (window.scrollY > 50) navbar.classList.add('shadow-sm', 'bg-dark');
+                else navbar.classList.remove('shadow-sm', 'bg-dark');
+            }
+        });
+
+        fetchData();
+    </script>
+</body>
+
+</html>

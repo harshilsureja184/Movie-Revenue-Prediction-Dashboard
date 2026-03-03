@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About - Movie Prediction Analytics Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-dark: rgba(25, 28, 41, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #edf2f7;
+            --text-mutated: #a0aec0;
+            --neon-accent: #6ee7b7;
+            --purple-accent: #a78bfa;
+            --blue-accent: #93c5fd;
+        }
+
+        body {
+            background: linear-gradient(to right, #0f111a, #161b22);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .hero-about {
+            margin-top: 5rem;
+            padding: 80px 0 60px;
+            background: radial-gradient(circle at top, rgba(167, 139, 250, 0.1), transparent 50%);
+            text-align: center;
+        }
+
+        .dashboard-title {
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--neon-accent), var(--blue-accent), var(--purple-accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-mutated);
+            font-weight: 300;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--card-dark);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .kpi-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-mutated);
+            margin-bottom: 10px;
+        }
+
+        .kpi-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .val-primary {
+            color: var(--blue-accent);
+        }
+
+        .val-success {
+            color: var(--neon-accent);
+        }
+
+        .val-danger {
+            color: #f472b6;
+        }
+
+        .val-warning {
+            color: #fbbf24;
+        }
+
+        .chart-box {
+            height: 350px;
+            width: 100%;
+            position: relative;
+        }
+
+        .chart-heading {
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .icon-accent {
+            color: var(--purple-accent);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .info-panel {
+            background: linear-gradient(to right, rgba(25, 28, 41, 0.9), transparent);
+            border-left: 4px solid var(--neon-accent);
+            padding: 40px;
+            border-radius: 0 20px 20px 0;
+            margin-top: 2rem;
+        }
+
+        .info-panel li {
+            margin-bottom: 15px;
+            color: var(--text-mutated);
+            font-weight: 300;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <section class="hero-about">
+        <div class="container">
+            <h1 class="dashboard-title">Inside The Dataset</h1>
+            <p class="dashboard-subtitle mt-3">
+                Empirical evidence extracted from the world's most comprehensive movie dataset structure.
+            </p>
+        </div>
+    </section>
+
+    <div class="container mb-5">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="glass-card h-100">
+                    <div class="kpi-title"><i class="bi bi-film me-2"></i>Total Movies</div>
+                    <div class="kpi-value val-primary">{{ total_movies }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card h-100">
+                    <div class="kpi-title"><i class="bi bi-piggy-bank me-2"></i>Avg Budget</div>
+                    <div class="kpi-value val-success">${{ "{:,.0f}".format(avg_budget) }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card h-100">
+                    <div class="kpi-title"><i class="bi bi-graph-up-arrow me-2"></i>Avg Revenue</div>
+                    <div class="kpi-value val-danger">${{ "{:,.0f}".format(avg_revenue) }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card h-100">
+                    <div class="kpi-title"><i class="bi bi-trophy me-2"></i>Max Revenue</div>
+                    <div class="kpi-value val-warning">${{ "{:,.0f}".format(max_revenue) }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="glass-card h-100">
+                    <h5 class="chart-heading">
+                        <span class="icon-accent"><i class="bi bi-pie-chart-fill"></i></span> Genre Dominance
+                    </h5>
+                    <div class="chart-box">
+                        <canvas id="genreChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="glass-card h-100">
+                    <h5 class="chart-heading">
+                        <span class="icon-accent"><i class="bi bi-bullseye"></i></span> Success vs Failure Rate
+                    </h5>
+                    <div class="chart-box">
+                        <canvas id="successChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel mt-5">
+            <h3 class="mb-4 text-white"><i class="bi bi-lightbulb text-warning me-2"></i> Analytical Takeaways</h3>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Market Saturation:</strong> Genre
+                    distribution highlights dominant categories in the film industry. High frequency typically aligns
+                    with popular market demand.</li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Risk vs Margin:</strong> The
+                    success versus failure ratio shows that high-budget spending without correlated marketing campaigns
+                    does not guarantee commercial gains.</li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i> <strong>Predictive Edge:</strong> These
+                    localized aggregate metrics empower our predictive ML models to map accurate forecasts based on
+                    historical production factors.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        Chart.defaults.color = '#a0aec0';
+        Chart.defaults.font.family = "'Outfit', sans-serif";
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 17, 26, 0.9)';
+        Chart.defaults.plugins.tooltip.titleColor = '#fff';
+
+        const genres = JSON.parse('{{ genres | tojson | safe }}');
+        const genreValues = JSON.parse('{{ genre_values | tojson | safe }}');
+        const successCount = Number('{{ success }}');
+        const failureCount = Number('{{ failure }}');
+
+        new Chart(document.getElementById('genreChart'), {
+            type: 'polarArea',
+            data: {
+                labels: genres,
+                datasets: [{
+                    data: genreValues,
+                    backgroundColor: [
+                        'rgba(167, 139, 250, 0.7)',
+                        'rgba(110, 231, 183, 0.7)',
+                        'rgba(147, 197, 253, 0.7)',
+                        'rgba(244, 114, 182, 0.7)',
+                        'rgba(251, 191, 36, 0.7)'
+                    ],
+                    borderColor: '#1a1d2d',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    r: { ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                },
+                plugins: { legend: { position: 'right' } }
+            }
+        });
+
+        new Chart(document.getElementById('successChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Profitable Hits', 'Losses'],
+                datasets: [{
+                    data: [successCount, failureCount],
+                    backgroundColor: ['#6ee7b7', '#f472b6'],
+                    borderWidth: 0, hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '75%',
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    </script>
+</body>
+
+</html>
