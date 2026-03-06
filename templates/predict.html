@@ -1,33 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
     <meta charset="UTF-8">
-    <title>Global Revenue Estimator</title>
+    <title>Regression Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
         rel="stylesheet">
 
     <style>
         :root {
-            --bg-dark: #0a0a0a;
-            --card-dark: rgba(23, 23, 23, 0.65);
-            --card-border: rgba(255, 255, 255, 0.06);
-            --text-main: #f5f5f5;
-            --text-mutated: #a3a3a3;
-            --primary-accent: #f59e0b;
-            --secondary-accent: #f43f5e;
-            --tertiary-accent: #8b5cf6;
+            --bg-dark: #0f111a;
+            --card-dark: rgba(25, 28, 41, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #edf2f7;
+            --text-mutated: #a0aec0;
+            --neon-accent: #6ee7b7;
+            --purple-accent: #a78bfa;
+            --blue-accent: #93c5fd;
         }
 
         body {
-            background: linear-gradient(135deg, #0a0a0a, #171717);
+            background: linear-gradient(135deg, #0f111a, #161b22);
             color: var(--text-main);
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -36,16 +36,15 @@
         .header-section {
             padding: 120px 0 60px;
             text-align: center;
-            background: radial-gradient(circle at top center, rgba(245, 158, 11, 0.08), transparent 70%);
+            background: radial-gradient(circle at center, rgba(147, 197, 253, 0.1), transparent 60%);
         }
 
         .page-title {
             font-weight: 700;
-            background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
+            background: linear-gradient(45deg, var(--blue-accent), var(--neon-accent), var(--purple-accent));
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: transparent;
             font-size: 3.5rem;
             letter-spacing: -1px;
         }
@@ -55,23 +54,21 @@
             font-size: 1.1rem;
             max-width: 650px;
             margin: 15px auto 0;
-            line-height: 1.6;
         }
 
         .glass-panel {
             background: var(--card-dark);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
         }
 
         .glass-panel:hover {
-            border-color: rgba(245, 158, 11, 0.2);
-            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
         }
 
         .form-label {
@@ -81,127 +78,81 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 10px;
         }
 
-        .form-control-custom,
-        .form-select-custom {
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .form-control-custom {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 14px 20px;
             font-size: 1rem;
             transition: all 0.3s ease;
             width: 100%;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
-        .form-select-custom option {
-            background-color: #171717;
-            color: #fff;
-        }
-
-        .form-control-custom:focus,
-        .form-select-custom:focus {
+        .form-control-custom:focus {
             outline: none;
-            border-color: var(--primary-accent);
-            background-color: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+            border-color: var(--blue-accent);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.2);
             color: #fff;
         }
 
         .form-control-custom::placeholder {
-            color: rgba(163, 163, 163, 0.4);
+            color: rgba(160, 174, 192, 0.5);
         }
 
         .btn-predict {
-            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
-            color: #fff;
+            background: linear-gradient(45deg, var(--neon-accent), var(--blue-accent));
+            color: #0f111a;
             border: none;
-            border-radius: 14px;
-            padding: 16px 30px;
-            font-weight: 600;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-weight: 700;
             font-size: 1.1rem;
             width: 100%;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-predict::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
-        }
-
-        .btn-predict:hover::after {
-            left: 150%;
+            letter-spacing: 1px;
+            margin-top: 10px;
         }
 
         .btn-predict:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(244, 63, 94, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(147, 197, 253, 0.4);
+            color: #fff;
         }
 
-        @keyframes slideUpFade {
+        @keyframes floatIn {
             0% {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(30px) scale(0.95);
             }
 
             100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        @keyframes pulseGlow {
-
-            0%,
+        @keyframes rotateGlow {
             100% {
-                filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.2));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 40px rgba(244, 63, 94, 0.4));
-            }
-        }
-
-        @keyframes auraRotate {
-            0% {
-                transform: rotate(0deg) scale(1.1);
-            }
-
-            50% {
-                transform: rotate(180deg) scale(1.3);
-            }
-
-            100% {
-                transform: rotate(360deg) scale(1.1);
+                transform: rotate(360deg);
             }
         }
 
         .result-card {
-            background: linear-gradient(145deg, rgba(38, 38, 38, 0.6), rgba(23, 23, 23, 0.9));
-            border: 1px solid var(--secondary-accent);
-            border-radius: 24px;
-            padding: 35px 30px;
+            background: linear-gradient(135deg, rgba(25, 28, 41, 0.9), rgba(15, 17, 26, 0.95));
+            border: 1px solid var(--blue-accent);
+            border-radius: 20px;
+            padding: 40px;
             text-align: center;
-            animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: floatIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             overflow: hidden;
-            z-index: 1;
         }
 
         .result-card::before {
@@ -211,134 +162,79 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(from 90deg at 50% 50%, rgba(245, 158, 11, 0.1), rgba(244, 63, 94, 0.15), rgba(139, 92, 246, 0.1), transparent 50%);
-            animation: auraRotate 18s linear infinite;
-            z-index: -1;
+            background: radial-gradient(circle, rgba(147, 197, 253, 0.1) 0%, transparent 60%);
+            animation: rotateGlow 15s linear infinite;
+            z-index: 0;
             pointer-events: none;
         }
 
         .status-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-block;
             padding: 12px 30px;
             border-radius: 50px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 25px;
             position: relative;
-            backdrop-filter: blur(10px);
+            z-index: 1;
+            box-shadow: 0 0 20px currentColor;
         }
 
-        .status-Hit {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.5);
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+        .status-hit {
+            background: rgba(110, 231, 183, 0.15);
+            color: var(--neon-accent);
+            border: 1px solid var(--neon-accent);
         }
 
-        .status-Average {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
-        }
-
-        .status-Flop {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);
-        }
-
-        .revenue-title {
-            color: #e5e5e5;
-            font-weight: 300;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .revenue-amount {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #fbbf24);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            margin-bottom: 30px;
-            animation: pulseGlow 4s infinite;
+        .status-flop {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid #f87171;
         }
 
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
         }
 
         .metric-box {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 20px;
-            transition: transform 0.3s;
-        }
-
-        .metric-box:hover {
-            transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(245, 158, 11, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
         }
 
         .metric-label {
             color: var(--text-mutated);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .metric-value {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-
-        .input-icon {
-            color: var(--primary-accent);
-            font-size: 1.1rem;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .error-card {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid #f87171;
             color: #fca5a5;
-            padding: 30px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
         }
 
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            min-height: 400px;
-            opacity: 0.7;
-            text-align: center;
-        }
-
-        .empty-icon {
-            font-size: 5rem;
-            background: linear-gradient(45deg, var(--text-mutated), rgba(255, 255, 255, 0.1));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            margin-bottom: 20px;
+        .input-icon {
+            color: var(--blue-accent);
         }
     </style>
 </head>
@@ -349,39 +245,59 @@
 
     <section class="header-section">
         <div class="container">
-            <h1 class="page-title">Genre-Based Predictor</h1>
-            <p class="page-subtitle">Project box office revenue by analyzing your estimated production budget against
-                historical genre averages.</p>
+            <h1 class="page-title">Predictive Regression Engine</h1>
+            <p class="page-subtitle">Harness the power of our trained Random Forest Regressor model to continuously
+                predict
+                the exact Box Office revenue of a cinematic project.</p>
         </div>
     </section>
 
     <div class="container pb-5">
-        <div class="row justify-content-center g-5">
+        <div class="row justify-content-center g-4">
 
             <div class="col-lg-5">
                 <div class="glass-panel h-100">
-                    <h4 class="text-white mb-4 fw-bold" style="font-size: 1.4rem;"><i
-                            class="bi bi-sliders text-muted me-2 mt-1"></i> Data Coordinates</h4>
+                    <h4 class="text-white mb-4 fw-bold"><i class="bi bi-cpu-fill text-muted me-2"></i> Regression
+                        Parameters</h4>
 
-                    <form method="POST" action="">
+                    <form method="POST" action="/predict">
                         <div>
-                            <label class="form-label"><i class="bi bi-wallet2 input-icon"></i> Production Budget</label>
+                            <label class="form-label"><i class="bi bi-cash-coin input-icon"></i> Production
+                                Budget</label>
                             <input type="number" step="1000" name="budget" class="form-control-custom"
-                                placeholder="e.g. 50000000" required>
+                                placeholder="e.g. 150000000" required>
                         </div>
 
                         <div>
-                            <label class="form-label"><i class="bi bi-film input-icon"></i> Primary Genre</label>
-                            <select name="genre" class="form-select-custom" required>
-                                <option value="" disabled selected>Select a genetic marker...</option>
-                                {% for g in genres %}
-                                <option value="{{ g }}">{{ g }}</option>
-                                {% endfor %}
-                            </select>
+                            <label class="form-label"><i class="bi bi-clock-history input-icon"></i> Runtime
+                                (minutes)</label>
+                            <input type="number" step="1" name="runtime" class="form-control-custom"
+                                placeholder="e.g. 120" required>
+                        </div>
+
+                        <div>
+                            <label class="form-label"><i class="bi bi-star-half input-icon"></i> Expected Vote Average
+                                (1-10)</label>
+                            <input type="number" step="0.1" name="vote_average" class="form-control-custom"
+                                placeholder="e.g. 7.5" required>
+                        </div>
+
+                        <div>
+                            <label class="form-label"><i class="bi bi-people-fill input-icon"></i> Expected Vote
+                                Count</label>
+                            <input type="number" step="1" name="vote_count" class="form-control-custom"
+                                placeholder="e.g. 5000" required>
+                        </div>
+
+                        <div>
+                            <label class="form-label"><i class="bi bi-fire input-icon"></i> Estimated Popularity
+                                Score</label>
+                            <input type="number" step="0.1" name="popularity" class="form-control-custom"
+                                placeholder="e.g. 85.0" required>
                         </div>
 
                         <button type="submit" class="btn-predict">
-                            Calculate Projection <i class="bi bi-magic ms-2"></i>
+                            <i class="bi bi-graph-up-arrow me-2"></i> Run Regression Output
                         </button>
                     </form>
                 </div>
@@ -390,31 +306,33 @@
             <div class="col-lg-7">
                 {% if error %}
                 <div class="error-card h-100 d-flex flex-column justify-content-center">
-                    <i class="bi bi-exclamation-octagon fs-1 d-block mb-3" style="color: #ef4444;"></i>
-                    <h4 class="mb-2 text-white">Simulation Error</h4>
+                    <i class="bi bi-exclamation-triangle-fill fs-1 d-block mb-3"></i>
+                    <h5>Prediction Error</h5>
                     <p class="mb-0">{{ error }}</p>
                 </div>
                 {% elif prediction is defined %}
                 <div class="result-card h-100 d-flex flex-column justify-content-center">
 
                     <div class="text-center w-100">
-                        <div class="status-badge status-{{ status }}">
-                            {% if status == 'Hit' %}
-                            <i class="bi bi-rocket-takeoff-fill me-2"></i> {{ status }}
-                            {% elif status == 'Average' %}
-                            <i class="bi bi-dash-circle-fill me-2"></i> {{ status }}
-                            {% else %}
-                            <i class="bi bi-arrow-down-circle-fill me-2"></i> {{ status }}
-                            {% endif %}
+                        {% if status == 'Hit' %}
+                        <div class="status-badge status-hit">
+                            <i class="bi bi-check-circle-fill me-2"></i> Continuous Forecast: Profit
                         </div>
+                        {% else %}
+                        <div class="status-badge status-flop">
+                            <i class="bi bi-x-circle-fill me-2"></i> Continuous Forecast: Loss
+                        </div>
+                        {% endif %}
                     </div>
 
-                    <h3 class="revenue-title">Estimated Worldwide Gross</h3>
-                    <div class="revenue-amount">${{ "{:,.0f}".format(prediction) }}</div>
+                    <h3 class="text-white mb-2 fw-light z-1">Projected Global Revenue</h3>
+                    <h1 class="display-4 fw-bold val-primary mb-4 z-1"
+                        style="color: var(--blue-accent); text-shadow: 0 0 30px rgba(147,197,253,0.3);">${{
+                        "{:,.2f}".format(prediction) }}</h1>
 
                     <div class="metrics-grid">
                         <div class="metric-box">
-                            <div class="metric-label">Net Profit / Loss</div>
+                            <div class="metric-label">Predicted Profit</div>
                             {% if profit > 0 %}
                             <div class="metric-value text-success">+${{ "{:,.0f}".format(profit) }}</div>
                             {% else %}
@@ -423,34 +341,27 @@
                         </div>
 
                         <div class="metric-box">
-                            <div class="metric-label">Return on Investment</div>
+                            <div class="metric-label">Projected ROI</div>
                             <div class="metric-value {% if roi > 0 %}text-success{% else %}text-danger{% endif %}">
                                 {{ "{:,.1f}".format(roi) }}%
                             </div>
                         </div>
 
                         <div class="metric-box">
-                            <div class="metric-label">Avg Genre Revenue</div>
-                            <div class="metric-value text-white">
-                                ${{ "{:,.0f}".format(avg_genre_revenue) }}
-                            </div>
-                        </div>
-
-                        <div class="metric-box">
-                            <div class="metric-label">Genre Success Rate</div>
-                            <div class="metric-value text-white">
-                                {{ "{:,.1f}".format(success_rate) }}%
+                            <div class="metric-label">Model Type</div>
+                            <div class="metric-value"
+                                style="font-size: 1.1rem; color: var(--blue-accent); margin-top: 5px;">Regression
                             </div>
                         </div>
                     </div>
                 </div>
                 {% else %}
-                <div class="glass-panel h-100 empty-state">
-                    <i class="bi bi-radar empty-icon"></i>
-                    <h3 class="text-white fw-light mb-3">System Standby</h3>
-                    <p class="text-muted" style="max-width: 80%;">Input the movie's production budget and genre on the
-                        left panel to initialize the predictive engine and view historical genre-based revenue topology.
-                    </p>
+                <div
+                    class="glass-panel h-100 d-flex flex-column align-items-center justify-content-center text-center opacity-75">
+                    <i class="bi bi-graph-up text-muted" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                    <h3 class="text-white fw-light">Awaiting Regression Parameters</h3>
+                    <p class="text-muted">Fill out the required input features on the left to invoke the continuous
+                        revenue estimation via our Regression Analysis model.</p>
                 </div>
                 {% endif %}
             </div>
@@ -458,8 +369,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS included safely -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

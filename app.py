@@ -49,60 +49,44 @@ def home():
     return render_template("home.html")
 
 # ======================================
-# PREDICTION (REAL DATA BASED)
+# PREDICTION (REGRESSION ANALYSIS)
 # ======================================
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-
     genres = sorted(df['main_genre'].unique())
-
+    import joblib  # type: ignore
+    model = joblib.load(os.path.join(BASE_DIR, "model.pkl"))
+    scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
+    
     if request.method == 'POST':
         try:
             budget = float(request.form['budget'])
-            genre = request.form['genre']
-
-            # Filter dataset by selected genre
-            genre_df = df[df['main_genre'] == genre]
-
-            if genre_df.empty:
-                return render_template(
-                    'predict.html',
-                    genres=genres,
-                    error="No data available for selected genre."
-                )
-
-            # Real values from dataset
-            avg_revenue = genre_df['revenue'].mean()
-            avg_budget = genre_df['budget'].mean()
-            avg_roi = genre_df['roi'].mean()
-            success_rate = (len(genre_df[genre_df['profit'] > 0]) / len(genre_df)) * 100
-
-            # Prediction logic:
-            # Adjust revenue based on user budget vs average genre budget
-            predicted_revenue = avg_revenue * (budget / avg_budget)
-
+            runtime = float(request.form['runtime'])
+            vote_average = float(request.form['vote_average'])
+            vote_count = float(request.form['vote_count'])
+            popularity = float(request.form['popularity'])
+            
+            import numpy as np  # type: ignore
+            features = np.array([budget, runtime, vote_average, vote_count, popularity]).reshape(1, -1)
+            scaled_features = scaler.transform(features)
+            predicted_revenue = model.predict(scaled_features)[0]
+            
             profit = predicted_revenue - budget
             roi = (profit / budget) * 100
             status = "Hit" if profit > 0 else "Flop"
-
+            
             return render_template(
                 'predict.html',
                 genres=genres,
                 prediction=float(f"{predicted_revenue:.2f}"),
                 profit=float(f"{profit:.2f}"),
                 roi=float(f"{roi:.2f}"),
-                status=status,
-                success_rate=float(f"{success_rate:.2f}"),
-                avg_genre_revenue=float(f"{avg_revenue:.2f}")
+                status=status
             )
-
-        except Exception:
-            return render_template(
-                'predict.html',
-                genres=genres,
-                error="Invalid input values."
-            )
+            
+        except Exception as e:
+            return render_template('predict.html', genres=genres, error=str(e))
 
     return render_template('predict.html', genres=genres)
 

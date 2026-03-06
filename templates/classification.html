@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
     <meta charset="UTF-8">
     <title>Classification Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -311,47 +312,51 @@
                 {% elif prediction is defined %}
                 <div class="result-card h-100 d-flex flex-column justify-content-center">
 
-                    <div class="text-center w-100">
+                    <h3 class="text-white mb-4 fw-light z-1">Classification Outcome</h3>
+
+                    <div class="text-center w-100 mb-4 z-1">
                         {% if status == 'Hit' %}
-                        <div class="status-badge status-hit">
-                            <i class="bi bi-check-circle-fill me-2"></i> Commercial Hit
+                        <div class="status-badge status-hit"
+                            style="font-size: 2.2rem; padding: 20px 40px; display: block; border-radius: 20px;">
+                            <i class="bi bi-stars me-2"></i> Commercial Hit
                         </div>
+                        <p class="text-muted mt-3 fs-5">Expected to be highly profitable.</p>
                         {% else %}
-                        <div class="status-badge status-flop">
-                            <i class="bi bi-x-circle-fill me-2"></i> Commercial Flop
+                        <div class="status-badge status-flop"
+                            style="font-size: 2.2rem; padding: 20px 40px; display: block; border-radius: 20px;">
+                            <i class="bi bi-graph-down-arrow me-2"></i> Commercial Flop
                         </div>
+                        <p class="text-muted mt-3 fs-5">Expected to incur financial loss.</p>
                         {% endif %}
                     </div>
 
-                    <h3 class="text-white mb-2 fw-light z-1">Projected Global Revenue</h3>
-                    <h1 class="display-4 fw-bold val-primary mb-4 z-1"
-                        style="color: var(--blue-accent); text-shadow: 0 0 30px rgba(147,197,253,0.3);">${{
-                        "{:,.2f}".format(prediction) }}</h1>
-
                     <div class="metrics-grid">
                         <div class="metric-box">
-                            <div class="metric-label">Predicted Profit</div>
-                            {% if profit > 0 %}
-                            <div class="metric-value text-success">+${{ "{:,.0f}".format(profit) }}</div>
+                            <div class="metric-label">Predicted Class</div>
+                            {% if status == 'Hit' %}
+                            <div class="metric-value text-success" style="font-size: 1.3rem; margin-top: 8px;">Positive
+                                (1)</div>
                             {% else %}
-                            <div class="metric-value text-danger">-${{ "{:,.0f}".format(profit|abs) }}</div>
+                            <div class="metric-value text-danger" style="font-size: 1.3rem; margin-top: 8px;">Negative
+                                (0)</div>
                             {% endif %}
                         </div>
 
                         <div class="metric-box">
-                            <div class="metric-label">Projected ROI</div>
-                            <div class="metric-value {% if roi > 0 %}text-success{% else %}text-danger{% endif %}">
-                                {{ "{:,.1f}".format(roi) }}%
-                            </div>
+                            <div class="metric-label">Decision Boundary</div>
+                            <div class="metric-value text-white" style="font-size: 1.2rem; margin-top: 8px;">Revenue
+                                &gt; Budget</div>
                         </div>
 
                         <div class="metric-box">
                             <div class="metric-label">Algorithm</div>
                             <div class="metric-value"
-                                style="font-size: 1.1rem; color: var(--purple-accent); margin-top: 5px;">Random Forest
+                                style="font-size: 1.2rem; margin-top: 8px; color: var(--purple-accent);">
+                                Random Forest
                             </div>
                         </div>
                     </div>
+
                 </div>
                 {% else %}
                 <div

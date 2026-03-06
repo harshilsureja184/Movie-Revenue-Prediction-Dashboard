@@ -1,122 +1,132 @@
 <style>
-/* Universal Premium Dark Glassmorphic Navbar */
-.univ-navbar {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    padding: 15px 0;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+    /* Universal Premium Dark Glassmorphic Navbar */
+    .univ-navbar {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        padding: 15px 0;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-.univ-brand {
-    font-weight: 700;
-    font-size: 24px;
-    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-    background-size: 200% auto;
-    animation: shine 3s linear infinite;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.3s ease;
-}
+    .univ-brand {
+        font-weight: 700;
+        font-size: 24px;
+        background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        background-size: 200% auto;
+        animation: shine 3s linear infinite;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.3s ease;
+    }
 
-.univ-brand:hover {
-    transform: scale(1.02);
-}
+    .univ-brand:hover {
+        transform: scale(1.02);
+    }
 
-@keyframes shine {
-    to { background-position: 200% center; }
-}
+    @keyframes shine {
+        to {
+            background-position: 200% center;
+        }
+    }
 
-.univ-nav-link {
-    position: relative;
-    font-weight: 500;
-    font-size: 16px;
-    margin: 0 14px;
-    color: rgba(255, 255, 255, 0.7) !important;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    padding: 8px 0;
-    letter-spacing: 0.3px;
-}
+    .univ-nav-link {
+        position: relative;
+        font-weight: 500;
+        font-size: 16px;
+        margin: 0 14px;
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        padding: 8px 0;
+        letter-spacing: 0.3px;
+    }
 
-.univ-nav-link:hover, .univ-nav-link.active {
-    color: #ffffff !important;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
+    .univ-nav-link:hover,
+    .univ-nav-link.active {
+        color: #ffffff !important;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
 
-.univ-nav-link::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0px;
-    background: linear-gradient(90deg, #6366f1, #a855f7);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 2px;
-}
+    .univ-nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0px;
+        background: linear-gradient(90deg, #6366f1, #a855f7);
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 2px;
+    }
 
-.univ-nav-link:hover::after, .univ-nav-link.active::after {
-    width: 100%;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
-}
+    .univ-nav-link:hover::after,
+    .univ-nav-link.active::after {
+        width: 100%;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+    }
 
-.univ-cta-btn {
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-    color: white !important;
-    padding: 10px 24px;
-    border-radius: 30px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
+    .univ-cta-btn {
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: white !important;
+        padding: 10px 24px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
 
-.univ-cta-btn::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    z-index: -1;
-    transition: opacity 0.3s ease;
-    opacity: 0;
-}
+    .univ-cta-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #a855f7, #ec4899);
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    }
 
-.univ-cta-btn:hover::before {
-    opacity: 1;
-}
+    .univ-cta-btn:hover::before {
+        opacity: 1;
+    }
 
-.univ-cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
-}
+    .univ-cta-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
+    }
 
-.navbar-toggler {
-    border: none;
-}
-.navbar-toggler:focus {
-    box-shadow: none;
-}
+    .navbar-toggler {
+        border: none;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg fixed-top univ-navbar navbar-dark">
     <div class="container">
         <!-- Brand -->
         <a class="navbar-brand univ-brand" href="/">
-            🎬 <span style="letter-spacing: -0.5px;">MoviePredict</span>
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" width="32" height="32"
+                class="d-inline-block align-text-top me-2" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));">
+            <span style="letter-spacing: -0.5px;">MoviePredict</span>
         </a>
 
         <!-- Mobile Toggle -->
@@ -131,16 +141,20 @@
                     <a class="nav-link univ-nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link univ-nav-link {% if request.path == '/predict' %}active{% endif %}" href="/predict">Prediction</a>
+                    <a class="nav-link univ-nav-link {% if request.path == '/predict' %}active{% endif %}"
+                        href="/predict">Prediction</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link univ-nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="/dashboard">Dashboard</a>
+                    <a class="nav-link univ-nav-link {% if request.path == '/dashboard' %}active{% endif %}"
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link univ-nav-link {% if request.path == '/about' %}active{% endif %}" href="/about">About</a>
+                    <a class="nav-link univ-nav-link {% if request.path == '/about' %}active{% endif %}"
+                        href="/about">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link univ-nav-link {% if request.path == '/classification' %}active{% endif %}" href="/classification">Classification</a>
+                    <a class="nav-link univ-nav-link {% if request.path == '/classification' %}active{% endif %}"
+                        href="/classification">Classification</a>
                 </li>
                 <!-- CTA Button -->
                 <li class="nav-item ms-lg-3 mt-3 mt-lg-0 mb-3 mb-lg-0">
