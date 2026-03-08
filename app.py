@@ -24,6 +24,7 @@ df = df.dropna()
 # Extract Year
 df['release_year'] = pd.to_datetime(df['release_date'], errors='coerce').dt.year
 df = df.dropna(subset=['release_year'])
+df['release_year'] = df['release_year'].astype(int)
 
 # Extract Main Genre
 def extract_genre(g):
@@ -116,9 +117,6 @@ def get_dashboard_data():
     if genre and genre != "All":
         filtered = filtered[filtered['main_genre'] == genre]
 
-    if year and year != "All":
-        filtered = filtered[filtered['release_year'] == int(year)]
-
     if budget and budget != "All":
         if budget == "Low":
             filtered = filtered[filtered['budget'] < 20000000]
@@ -127,10 +125,14 @@ def get_dashboard_data():
         else:
             filtered = filtered[filtered['budget'] >= 100000000]
 
+    year_trend = filtered.groupby('release_year')['revenue'].mean().to_dict()
+
+    if year and year != "All":
+        filtered = filtered[filtered['release_year'] == int(year)]
+
     revenue_by_genre = filtered.groupby('main_genre')['revenue'].mean().to_dict()
     success = len(filtered[filtered['profit'] > 0])
     failure = len(filtered[filtered['profit'] <= 0])
-    year_trend = filtered.groupby('release_year')['revenue'].mean().to_dict()
     avg_budget = filtered.groupby('main_genre')['budget'].mean().to_dict()
 
     roi_dist = {
