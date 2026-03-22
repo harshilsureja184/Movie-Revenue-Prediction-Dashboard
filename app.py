@@ -71,7 +71,7 @@ def predict():
             import numpy as np  # type: ignore
             features = np.array([budget, runtime, vote_average, vote_count, popularity]).reshape(1, -1)
             scaled_features = scaler.transform(features)
-            predicted_revenue = model.predict(scaled_features)[0]
+            predicted_revenue = max(0.0, float(model.predict(scaled_features)[0]))
             
             profit = predicted_revenue - budget
             roi = (profit / budget) * 100
@@ -83,11 +83,12 @@ def predict():
                 prediction=float(f"{predicted_revenue:.2f}"),
                 profit=float(f"{profit:.2f}"),
                 roi=float(f"{roi:.2f}"),
-                status=status
+                status=status,
+                form_data=request.form
             )
             
         except Exception as e:
-            return render_template('predict.html', genres=genres, error=str(e))
+            return render_template('predict.html', genres=genres, error=str(e), form_data=request.form)
 
     return render_template('predict.html', genres=genres)
 
@@ -248,7 +249,7 @@ def classification():
             import numpy as np  # type: ignore
             features = np.array([budget, runtime, vote_average, vote_count, popularity]).reshape(1, -1)
             scaled_features = scaler.transform(features)
-            predicted_revenue = model.predict(scaled_features)[0]
+            predicted_revenue = max(0.0, float(model.predict(scaled_features)[0]))
             
             profit = predicted_revenue - budget
             roi = (profit / budget) * 100
@@ -260,11 +261,12 @@ def classification():
                 prediction=float(f"{predicted_revenue:.2f}"),
                 profit=float(f"{profit:.2f}"),
                 roi=float(f"{roi:.2f}"),
-                status=status
+                status=status,
+                form_data=request.form
             )
             
         except Exception as e:
-            return render_template('classification.html', genres=genres, error=str(e))
+            return render_template('classification.html', genres=genres, error=str(e), form_data=request.form)
 
     return render_template('classification.html', genres=genres)
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -265,40 +265,53 @@
                             <label class="form-label"><i class="bi bi-cash-coin input-icon"></i> Production
                                 Budget</label>
                             <input type="number" step="1000" name="budget" class="form-control-custom"
-                                placeholder="e.g. 150000000" required>
+                                placeholder="e.g. 150000000" value="{{ form_data.budget if form_data else '' }}"
+                                required>
                         </div>
 
                         <div>
                             <label class="form-label"><i class="bi bi-clock-history input-icon"></i> Runtime
                                 (minutes)</label>
                             <input type="number" step="1" name="runtime" class="form-control-custom"
-                                placeholder="e.g. 120" required>
+                                placeholder="e.g. 120" value="{{ form_data.runtime if form_data else '' }}" required>
                         </div>
 
                         <div>
                             <label class="form-label"><i class="bi bi-star-half input-icon"></i> Expected Vote Average
                                 (1-10)</label>
                             <input type="number" step="0.1" name="vote_average" class="form-control-custom"
-                                placeholder="e.g. 7.5" required>
+                                placeholder="e.g. 7.5" value="{{ form_data.vote_average if form_data else '' }}"
+                                required>
                         </div>
 
                         <div>
                             <label class="form-label"><i class="bi bi-people-fill input-icon"></i> Expected Vote
                                 Count</label>
                             <input type="number" step="1" name="vote_count" class="form-control-custom"
-                                placeholder="e.g. 5000" required>
+                                placeholder="e.g. 5000" value="{{ form_data.vote_count if form_data else '' }}"
+                                required>
                         </div>
 
                         <div>
                             <label class="form-label"><i class="bi bi-fire input-icon"></i> Estimated Popularity
                                 Score</label>
                             <input type="number" step="0.1" name="popularity" class="form-control-custom"
-                                placeholder="e.g. 85.0" required>
+                                placeholder="e.g. 85.0" value="{{ form_data.popularity if form_data else '' }}"
+                                required>
                         </div>
 
-                        <button type="submit" class="btn-predict">
-                            <i class="bi bi-graph-up-arrow me-2"></i> Run Regression Output
-                        </button>
+                        <div class="d-flex gap-3 mt-3">
+                            <button type="submit"
+                                class="btn-predict w-50 m-0 d-flex align-items-center justify-content-center"
+                                style="font-size: 0.95rem; padding: 12px 10px;">
+                                <i class="bi bi-graph-up-arrow me-2" style="font-size: 1.1rem;"></i> Run Output
+                            </button>
+                            <a href="/predict"
+                                class="btn-predict w-50 m-0 text-decoration-none text-center d-flex align-items-center justify-content-center"
+                                style="font-size: 0.95rem; padding: 12px 10px; background: rgba(255, 255, 255, 0.05); color: var(--text-mutated); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                <i class="bi bi-trash me-2" style="font-size: 1.1rem;"></i> Clear Form
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
